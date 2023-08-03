@@ -8,9 +8,8 @@ import ru.netology.delivery.data.DataGenerator;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -35,17 +34,17 @@ class DeliveryTest {
         $("[data-test-id='name'] input").setValue(validUser.getName());
         $("[data-test-id='phone'] input").setValue(validUser.getPhone());
         $("[data-test-id='agreement']").click();
-        $(withText("Запланировать")).click();
-        $(withText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
+        $(byText("Запланировать")).click();
+        $(byText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
         $("[data-test-id='success-notification'].notification .notification__content")
-                .shouldHave(exactText("Встреча успешно запланирована на " + firstMeetingDate)).shouldBe(visible);
+                .shouldHave(text("Встреча успешно запланирована на " + firstMeetingDate)).shouldBe(visible);
         $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
         $("[data-test-id='date'] input").setValue(secondMeetingDate);
-        $(withText("Запланировать")).click();
+        $(byText("Запланировать")).click();
         $("[data-test-id='replan-notification'].notification .notification__content")
-                .shouldHave(exactText("У вас уже запланирована встреча на другую дату. Перепланировать?")).shouldBe(visible);
-        $(withText("Перепланировать")).click();
+                .shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?")).shouldBe(visible);
+        $(byText("Перепланировать")).click();
         $("[data-test-id='success-notification'].notification .notification__content")
-                .shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate)).shouldBe(visible);
+                .shouldHave(text("Встреча успешно запланирована на " + secondMeetingDate)).shouldBe(visible);
     }
 }
